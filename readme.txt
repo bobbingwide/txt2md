@@ -1,7 +1,7 @@
 === txt2md ===
-Contributors: bobbingwide
+Contributors: bobbingwide, vsgloik
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
-Tags: shortcodes, smart, lazy
+Tags: readme, convert, WordPress, GitHub
 Requires at least: 4.3
 Tested up to: 4.4.1
 Stable tag: 0.0.0
@@ -22,7 +22,8 @@ Use it as part of your package routine.
 1. Create a batch file 
 1. Use it to convert a readme.txt file to a README.md file
 
-Don't activate this as a plugin. It's not intended to be run in your WordPress website.
+Don't activate this as a plugin. It's not intended to be run in your WordPress website
+but as part of a batch process.
 
 ```
 php \apache\htdocs\wordpress\wp-content\plugins\txt2md\txt2md.php
@@ -39,7 +40,7 @@ Read the code
 None
 
 == Screenshots ==
-1. txt2md in action
+1. txt2md in action - not actually taken
 
 == Upgrade Notice ==
 = 0.0.0 =

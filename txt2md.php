@@ -7,8 +7,6 @@ Description: Convert a WordPress readme.txt file to Github README.md
 Version: 0.0.0
 Author: bobbingwide
 Author URI: http://www.oik-plugins.com/author/bobbingwide
-Text Domain: oik-zip
-Domain Path: /languages/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
