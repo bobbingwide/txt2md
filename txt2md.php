@@ -4,7 +4,7 @@
 Plugin Name: txt2md
 Plugin URI: http://www.oik-plugins.com/oik-plugins/txt2md
 Description: Convert a WordPress readme.txt file to Github README.md 
-Version: 0.0.0
+Version: 0.0.1
 Author: bobbingwide
 Author URI: http://www.oik-plugins.com/author/bobbingwide
 License: GPLv2 or later
@@ -33,6 +33,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * It assumes that the readme.txt file is the master.
  * 
  * - Converts first line to a heading level 1
+ * - then adds the banner image, if present in assets
  * - Converts === heading === to ### heading
  * - Converts foo: bar to * foo: bar if line does not start with a * already
  * - Doesn't do anything else
@@ -50,6 +51,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
     $line = rtrim( $line );
     if ( 1 == $count ) {
       $line = trim( $line, '=' );
+			$repository = trim( $line );
       $line = '#'. $line;
     }
     if ( substr( $line, 0, 1 ) == '=' )  {
@@ -63,5 +65,31 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
     }
     echo $line; 
     echo PHP_EOL; 
+		if ( 1 == $count ) {
+			display_banner( $repository );
+		}
   }
+	
+/**
+ * Display the banner image, if present in the assets folder
+ * 
+ * e.g.  
+ * ![banner](https://raw.githubusercontent.com/bobbingwide/oik-ajax/master/assets/oik-ajax-banner-772x250.png)
+ *
+ * Format: `![Alt Text](url)`
+ *
+ * @param string $repository - the repository name
+ * @param string $owner - the repository owner
+ */
+function display_banner( $repository="txt2md", $owner="bobbingwide" ) {
+	$dir = getcwd();
+	$files = scandir( "$dir/assets" );
+	foreach ( $files as $file ) {
+		if ( false !== strpos( $file, "-banner-772x250.jpg" ) ) {
+			$line = "![banner](https://raw.githubusercontent.com/$owner/$repository/master/assets/$file)";
+			echo $line;
+			echo PHP_EOL;
+		}
+	}
+}
   
