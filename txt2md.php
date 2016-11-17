@@ -4,7 +4,7 @@
 Plugin Name: txt2md
 Plugin URI: http://www.oik-plugins.com/oik-plugins/txt2md
 Description: Convert a WordPress readme.txt file to Github README.md 
-Version: 0.0.1
+Version: 0.0.2
 Author: bobbingwide
 Author URI: http://www.oik-plugins.com/author/bobbingwide
 License: GPLv2 or later
@@ -38,6 +38,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * - Converts === heading === to ### heading
  * - Converts foo: bar to * foo: bar if line does not start with a * already
  * - Converts single back ticks to triple back ticks 
+ * - Translates [github] shortcodes
  * - Doesn't do anything else
  * 
  * Echos the output to stdout 
@@ -70,6 +71,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 		if ( $line == '`' ) {
 			$line = '```';
 		}
+		
+		$line = convert_github( $line );
     echo $line; 
     echo PHP_EOL; 
 		if ( 1 == $count ) {
@@ -128,6 +131,57 @@ function display_screenshot( $repository="txt2md", $owner="bobbingwide" ) {
 		echo $line;
 		echo PHP_EOL;
 	}	
+}
+
+/**
+ * Convert github shortcode to an URL
+ * 
+ * We extract the shortcode bit to the middle and
+ * convert that - similar to the github shortcode itself
+ * then merge it back with the lhs and rhs
+ *
+ * @param string $line
+ * @return string possibly modified
+ */
+function convert_github( $line ) {
+
+	$ssb = strpos( $line, "[github" );
+	if ( false !== $ssb ) {
+		$lhs = substr( $line, 0, $ssb );
+		$rhs = substr( $line, $ssb );
+    $esb = strpos( $rhs, "]" );
+		if ( false !== $esb ) {
+			$esb++;
+			$middle = substr( $rhs, 0, $esb );
+			$rhs = substr( $rhs, $esb );
+			
+			//echo $ssb;
+			//echo $esb;
+			//echo $lhs . PHP_EOL;
+			//echo $middle . PHP_EOL;
+			//echo $rhs . PHP_EOL;
+			$middle = github2url( $middle ); 
+			$line = $lhs . $middle . $rhs;
+		}
+	}
+	return( $line );
+}
+
+/**
+ * Convert the shortcode to a GitHub URL
+ * 
+ * @param string $middle the github shortcode and parameters
+ * @return string the generated URL
+ */
+function github2url( $middle ) {
+	$middle = strtolower( $middle );
+	$middle = str_replace( " issue ", " issues ", $middle );
+	$shortcode = substr( $middle, 1, -1 );
+	$parts = explode( ' ', $shortcode );
+	$parts[0] = "https://github.com";
+	$muddle = implode( '/', $parts );
+	//echo $muddle;
+	return( $muddle );
 }	
 		
 		

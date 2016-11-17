@@ -2,7 +2,7 @@
 Contributors: bobbingwide, vsgloik
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags: readme, convert, WordPress, GitHub
-Requires at least: 4.3
+Requires at least: 4.6
 Tested up to: 4.7-beta4
 Stable tag: 0.0.2
 License: GPLv2 or later
@@ -56,6 +56,7 @@ New plugin, available from GitHub and oik-plugins.
 
 == Changelog == 
 = 0.0.2 = 
+* Added: Convert GitHub shortcodes to URLs [github bobbingwide txt2md issue 3]
 * Added: Logic to display the screenshot.png or screenshot.jpg file for a theme.
 * Added: Single back tick conversion
 

@@ -3,9 +3,9 @@
 * Contributors: bobbingwide, vsgloik
 * Donate link: http://www.oik-plugins.com/oik/oik-donate/
 * Tags: readme, convert, WordPress, GitHub
-* Requires at least: 4.3
-* Tested up to: 4.6-RC2
-* Stable tag: 0.0.1
+* Requires at least: 4.6
+* Tested up to: 4.7-beta4
+* Stable tag: 0.0.2
 * License: GPLv2 or later
 * License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,9 @@ None
 1. txt2md in action - not actually taken
 
 ## Upgrade Notice 
+# 0.0.2 
+Now supports display of a screenshot for a theme.
+
 # 0.0.1 
 Now supports display of a banner image.
 
@@ -53,6 +56,11 @@ Now supports display of a banner image.
 New plugin, available from GitHub and oik-plugins.
 
 ## Changelog 
+# 0.0.2 
+* Added: Convert GitHub shortcodes to URLs https://github.com/bobbingwide/txt2md/issues/3
+* Added: Logic to display the screenshot.png or screenshot.jpg file for a theme.
+* Added: Single back tick conversion
+
 # 0.0.1 
 * Added: Logic to display a banner image. Assumes the $owner is bobbingwide.
 
