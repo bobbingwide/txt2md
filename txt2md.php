@@ -34,14 +34,17 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * 
  * - Converts first line to a heading level 1
  * - then adds the banner image, if present in assets
+ * - then adds the screenshot image, if present - we don't expect both
  * - Converts === heading === to ### heading
  * - Converts foo: bar to * foo: bar if line does not start with a * already
+ * - Converts single back ticks to triple back ticks 
  * - Doesn't do anything else
  * 
  * Echos the output to stdout 
  * but you can redirect it to readme.md
  *
  * @link https://help.github.com/articles/github-flavored-markdown
+ * @link https://help.github.com/categories/writing-on-github/
  * 
  */
   $rmtxt = file( "readme.txt" );
@@ -63,10 +66,15 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
     if ( substr( $line,0,1 ) != "*"  && false != strpos( $line, ": " ) ) {
       $line = "* $line";
     }
+		
+		if ( $line == '`' ) {
+			$line = '```';
+		}
     echo $line; 
     echo PHP_EOL; 
 		if ( 1 == $count ) {
 			display_banner( $repository );
+			display_screenshot( $repository );
 		}
   }
 	
@@ -83,13 +91,44 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 function display_banner( $repository="txt2md", $owner="bobbingwide" ) {
 	$dir = getcwd();
-	$files = scandir( "$dir/assets" );
-	foreach ( $files as $file ) {
-		if ( false !== strpos( $file, "-banner-772x250.jpg" ) ) {
-			$line = "![banner](https://raw.githubusercontent.com/$owner/$repository/master/assets/$file)";
-			echo $line;
-			echo PHP_EOL;
+	if ( is_dir( "$dir/assets" ) ) {
+		$files = scandir( "$dir/assets" );
+		foreach ( $files as $file ) {
+			$pos = strpos( $file, "-banner-772x250.jpg" );
+			if ( $pos !== false ) {
+				$repository = substr( $file, 0, $pos );
+				$line = "![banner](https://raw.githubusercontent.com/$owner/$repository/master/assets/$file)";
+				echo $line;
+				echo PHP_EOL;
+			}
 		}
-	}
+	}	
 }
+
+/**
+ * Display the screenshot image, if it's a theme
+ * 
+ * e.g.
+ * ![screenshot](https://raw.githubusercontent.com/bobbingwide/genesis-oik/master/screenshot.png)
+ *
+ * Format: `![Alt Text](url)`
+ *
+ * @param string $repository - the repository name
+ * @param string $owner - the repository owner
+ */
+function display_screenshot( $repository="txt2md", $owner="bobbingwide" ) {
+	$file = null;
+	if ( file_exists( "screenshot.png" ) ) {
+		$file = "screenshot.png"; 
+	} elseif ( file_exists( "screenshot.jpg" ) ) {
+		$file = "screenshot.jpg";
+	}
+	if ( $file ) {
+		$line = "![screenshot](https://raw.githubusercontent.com/$owner/$repository/master/$file)";
+		echo $line;
+		echo PHP_EOL;
+	}	
+}	
+		
+		
   
