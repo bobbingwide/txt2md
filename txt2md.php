@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2014-2016
+<?php // (C) Copyright Bobbing Wide 2014-2017
 
 /*
 Plugin Name: txt2md
@@ -116,6 +116,8 @@ function display_banner( $repository="txt2md", $owner="bobbingwide" ) {
  *
  * Format: `![Alt Text](url)`
  *
+ * @TODO oik_require() may not be available when run directly from oik-tip or oik-zip
+ *
  * @param string $repository - the repository name
  * @param string $owner - the repository owner
  */
@@ -124,7 +126,9 @@ function display_screenshot( $repository="txt2md", $owner="bobbingwide" ) {
 	if ( file_exists( "screenshot.png" ) ) {
 		$file = "screenshot.png"; 
 	} elseif ( file_exists( "screenshot.jpg" ) ) {
-		$file = "screenshot.jpg";
+		oik_require( "j2p.php", "txt2md" );
+		jpg2png( "screenshot.jpg", "screenshot.png" );
+		$file = "screenshot.png";
 	}
 	if ( $file ) {
 		$line = "![screenshot](https://raw.githubusercontent.com/$owner/$repository/master/$file)";
