@@ -48,38 +48,50 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * @link https://help.github.com/categories/writing-on-github/
  * 
  */
-  $rmtxt = file( "readme.txt" );
-  $count = 0;
-  foreach ( $rmtxt as $line ) {
-    $count++;
-    $line = rtrim( $line );
-    if ( 1 == $count ) {
-      $line = trim( $line, '=' );
-			$repository = trim( $line );
-      $line = '#'. $line;
-    }
-    if ( substr( $line, 0, 1 ) == '=' )  {
-      $line = rtrim( $line, '=' ); 
-      //echo $line;
-      $line = str_replace( "=", "#", $line );
-    }
-    
-    if ( substr( $line,0,1 ) != "*"  && false != strpos( $line, ": " ) ) {
-      $line = "* $line";
-    }
-		
-		if ( $line == '`' ) {
-			$line = '```';
-		}
-		
-		$line = convert_github( $line );
-    echo $line; 
-    echo PHP_EOL; 
+ 
+function txt2md_cli( $branch ) {
+	$rmtxt=file( "readme.txt" );
+	$count=0;
+	foreach ( $rmtxt as $line ) {
+		$count ++;
+		$line=rtrim( $line );
 		if ( 1 == $count ) {
-			display_banner( $repository );
-			display_screenshot( $repository );
+			$line      =trim( $line, '=' );
+			$repository=trim( $line );
+			$line      ='#' . $line;
 		}
-  }
+		if ( substr( $line, 0, 1 ) == '=' ) {
+			$line=rtrim( $line, '=' );
+			//echo $line;
+			$line=str_replace( "=", "#", $line );
+		}
+
+		if ( substr( $line, 0, 1 ) != "*" && false != strpos( $line, ": " ) ) {
+			$line="* $line";
+		}
+
+		if ( $line == '`' ) {
+			$line='```';
+		}
+
+		$line=convert_github( $line );
+		echo $line;
+		echo PHP_EOL;
+		if ( 1 == $count ) {
+			display_banner( $repository, 'bobbingwide', $branch );
+			display_screenshot( $repository, 'bobbingwide', $branch );
+		}
+	}
+}
+ 
+ if ( PHP_SAPI === 'cli' ) {
+	if ( $argc >= 2) {
+		$branch=$argv[1];
+	} else {
+		$branch = 'master';
+	}
+	 txt2md_cli( $branch );
+ }	 
 	
 /**
  * Display the banner image, if present in the assets folder
@@ -91,8 +103,9 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  *
  * @param string $repository - the repository name
  * @param string $owner - the repository owner
+ * @param string $branch - the branch name
  */
-function display_banner( $repository="txt2md", $owner="bobbingwide" ) {
+function display_banner( $repository="txt2md", $owner="bobbingwide", $branch='master' ) {
 	$dir = getcwd();
 	if ( is_dir( "$dir/assets" ) ) {
 		$files = scandir( "$dir/assets" );
@@ -100,7 +113,7 @@ function display_banner( $repository="txt2md", $owner="bobbingwide" ) {
 			$pos = strpos( $file, "-banner-772x250.jpg" );
 			if ( $pos !== false ) {
 				$repository = substr( $file, 0, $pos );
-				$line = "![banner](https://raw.githubusercontent.com/$owner/$repository/master/assets/$file)";
+				$line = "![banner](https://raw.githubusercontent.com/$owner/$repository/$branch/assets/$file)";
 				echo $line;
 				echo PHP_EOL;
 			}
@@ -121,7 +134,7 @@ function display_banner( $repository="txt2md", $owner="bobbingwide" ) {
  * @param string $repository - the repository name
  * @param string $owner - the repository owner
  */
-function display_screenshot( $repository="txt2md", $owner="bobbingwide" ) {
+function display_screenshot( $repository="txt2md", $owner="bobbingwide", $branch="master" ) {
 	$file = null;
 	if ( file_exists( "screenshot.png" ) ) {
 		$file = "screenshot.png"; 
@@ -131,7 +144,7 @@ function display_screenshot( $repository="txt2md", $owner="bobbingwide" ) {
 		$file = "screenshot.png";
 	}
 	if ( $file ) {
-		$line = "![screenshot](https://raw.githubusercontent.com/$owner/$repository/master/$file)";
+		$line = "![screenshot](https://raw.githubusercontent.com/$owner/$repository/$branch/$file)";
 		echo $line;
 		echo PHP_EOL;
 	}	
@@ -186,7 +199,19 @@ function github2url( $middle ) {
 	$muddle = implode( '/', $parts );
 	//echo $muddle;
 	return( $muddle );
-}	
+}
+
+/**
+ * Creates the README.md file without redirection
+ * Uses output buffering then write?
+ *
+ * @param $branch
+ * @param $readmemd
+ */
+function txt2md( $branch, $readmemd ) {
+
+}
+	
 		
 		
   
