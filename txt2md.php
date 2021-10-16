@@ -113,7 +113,7 @@ function display_banner( $repository="txt2md", $owner="bobbingwide", $branch='ma
 			$pos = strpos( $file, "-banner-772x250.jpg" );
 			if ( $pos !== false ) {
 				$repository = substr( $file, 0, $pos );
-				$line = "![banner](https://raw.githubusercontent.com/$owner/$repository/$branch/assets/$file)";
+				$line = "![banner](assets/$file)";
 				echo $line;
 				echo PHP_EOL;
 			}
@@ -144,7 +144,7 @@ function display_screenshot( $repository="txt2md", $owner="bobbingwide", $branch
 		$file = "screenshot.png";
 	}
 	if ( $file ) {
-		$line = "![screenshot](https://raw.githubusercontent.com/$owner/$repository/$branch/$file)";
+		$line = "![screenshot]($file)";
 		echo $line;
 		echo PHP_EOL;
 	}	
