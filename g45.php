@@ -1,11 +1,13 @@
 <?php
-
-// (C) Copyright Bobbing Wide 2021
-//
-// Syntax: j45.php sourcedirectory targetdirectory
-// If target directory is not specified then we'll update the original file
-//
-//
+/**
+ * @copyright (C) Copyright Bobbing Wide 2021
+ * @package txt2md
+ *
+ * Syntax: g45.php sourcedirectory
+ *
+ * Converts all .jpg and .png files in the source folder ( /jpg/ )
+ * to .webp files in the target folder ( /webp/ )
+ */
 
 // Command line version
 if ( $argc > 1 ) {
@@ -14,26 +16,36 @@ if ( $argc > 1 ) {
     $source = 'C:/apache/htdocs/oik-plugins/banners/';
     $source = 'C:/backups-SB/herbmiller.me/banners/';
     // For Garden Vista Group
-    $source = 'C:/backups-SB/gardenvista.co.uk/jpg/';
+
     //$target = 'C:/apache/htdocs/oik-plugins/banners-quality/';
 }
 //$quality = 45;
 
 echo $source;
 
-
-$files = list_files( $source );
+$source = 'C:/backups-SB/gardenvista.co.uk/jpg/';
+$files = list_files( $source, '*.jpg' );
 $qualities = [ 100,95,90,85,80,75,70,65,60,55, 50,45,10,1 ];
-$qualities = [70, 65, 60 ];
+$qualities = [ 65, 60, 55 ];
 echo "File," . implode( ',', $qualities);
 echo PHP_EOL;
 foreach ( $files as $file ) {
-    w45( $file, $qualities);
+    w45( $file, $qualities, 'jpg');
 }
 
-function list_files( $source_directory ) {
+$source = 'C:/backups-SB/gardenvista.co.uk/png/';
+$files = list_files( $source, '*.png' );
+$qualities = [ 100,95,90,85,80,75,70,65,60,55, 50,45,10,1 ];
+$qualities = [ 65, 60, 55 ];
+echo "File," . implode( ',', $qualities);
+echo PHP_EOL;
+foreach ( $files as $file ) {
+    w45( $file, $qualities, 'png');
+}
+
+function list_files( $source_directory, $mask ) {
     //$files = glob( $source_directory. '*-772x250.jpg' );
-    $files = glob( $source_directory. '*.jpg' );
+    $files = glob( $source_directory. $mask );
     //print_r( $files );
     return $files;
 
@@ -41,26 +53,29 @@ function list_files( $source_directory ) {
 
 
 /**
- * Syntax: p2j.php banner file
+ * Convert .jpg to .webp
  *
- * @param string $png - file name of png
- * @param string $jpg - file name of jpeg
  */
-function w45( $source_file, $qualities ) {
+function w45( $source_file, $qualities, $ext ) {
     $source_size = filesize( $source_file );
     $target_size = null;
-    $image=imagecreatefromjpeg( $source_file );
+    if ( 'jpg' === $ext) {
+        $image = imagecreatefromjpeg($source_file);
+    } else {
+        $image = imagecreatefrompng( $source_file);
+    }
     if ($image ) {
-        $basename = basename( $source_file, '.jpg' );
-        $basename = str_replace( 'banner-772x250', '', $basename );
+        //image2webp( $image, $basename, );
+        $basename = basename( $source_file, ".$ext" );
+        //$basename = str_replace( 'banner-772x250', '', $basename );
         echo $basename;
         echo ',';
         echo $source_size;
         foreach ( $qualities as $quality ) {
-            $target_file=str_replace( '.jpg', "-$quality.webp", $source_file );
-            $target_file=str_replace( '/banners/', '/banners-webp/', $target_file );
+            $target_file=str_replace( ".$ext", "-$quality.webp", $source_file );
+            //$target_file=str_replace( '/banners/', '/banners-webp/', $target_file );
             // For GardenVista Group
-            $target_file=str_replace( '/jpg/', '/webp/', $target_file );
+            $target_file=str_replace( "/$ext/", '/webp/', $target_file );
             //echo $target_file;
             //gob();
             imagewebp( $image, $target_file, $quality );
@@ -73,7 +88,3 @@ function w45( $source_file, $qualities ) {
     }
     echo PHP_EOL;
 }
-
-
-
-
