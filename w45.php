@@ -2,7 +2,7 @@
 
 // (C) Copyright Bobbing Wide 2021
 //
-// Syntax: j45.php sourcedirectory targetdirectory
+// Syntax: w45.php sourcedirectory targetdirectory
 // If target directory is not specified then we'll update the original file
 //
 //
@@ -12,7 +12,7 @@ if ( $argc > 1 ) {
 	$source=$argv[1];
 }	 else {
 	$source = 'C:/apache/htdocs/oik-plugins/banners/';
-	$source = 'C:/backups-SB/herbmiller.me/banners/';
+	//$source = 'C:/backups-SB/herbmiller.me/banners/';
 	//$target = 'C:/apache/htdocs/oik-plugins/banners-quality/';
 }
 //$quality = 45;
@@ -22,6 +22,7 @@ echo $source;
 
 $files = list_files( $source );
 $qualities = [ 100,95,90,85,80,75,70,65,60,55, 50,45,10,1 ];
+$qualities = [ 25, 50, 62, 75  ];
 echo "File," . implode( ',', $qualities);
 echo PHP_EOL;
 foreach ( $files as $file ) {
@@ -37,7 +38,7 @@ function list_files( $source_directory ) {
 
 
 /**
- * Syntax: p2j.php banner file
+ *
  *
  * @param string $png - file name of png
  * @param string $jpg - file name of jpeg

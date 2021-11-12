@@ -2,8 +2,9 @@
 
 // (C) Copyright Bobbing Wide 2021
 //
-// Syntax: j45.php sourcedirectory targetdirectory
-// If target directory is not specified then we'll update the original file
+// Syntax: j45.php sourcedirectory
+// If sourcedirectory is not specified we'll use oik-plugins/banners
+// Targetdirectory is banners-quality
 //
 //
 

@@ -8,6 +8,7 @@
  * Converts all .jpg and .png files in the source folder ( /jpg/ )
  * to .webp files in the target folder ( /webp/ )
  */
+ini_set( 'memory_limit', '512M' );
 
 // Command line version
 if ( $argc > 1 ) {
@@ -26,21 +27,21 @@ echo $source;
 $source = 'C:/backups-SB/gardenvista.co.uk/jpg/';
 $files = list_files( $source, '*.jpg' );
 $qualities = [ 100,95,90,85,80,75,70,65,60,55, 50,45,10,1 ];
-$qualities = [ 65, 60, 55 ];
+$qualities = [ 55 ];
 echo "File," . implode( ',', $qualities);
 echo PHP_EOL;
 foreach ( $files as $file ) {
-    w45( $file, $qualities, 'jpg');
+    maybew45( $file, $qualities, 'jpg');
 }
 
 $source = 'C:/backups-SB/gardenvista.co.uk/png/';
 $files = list_files( $source, '*.png' );
 $qualities = [ 100,95,90,85,80,75,70,65,60,55, 50,45,10,1 ];
-$qualities = [ 65, 60, 55 ];
+$qualities = [ 55 ];
 echo "File," . implode( ',', $qualities);
 echo PHP_EOL;
 foreach ( $files as $file ) {
-    w45( $file, $qualities, 'png');
+    maybew45( $file, $qualities, 'png');
 }
 
 function list_files( $source_directory, $mask ) {
@@ -51,6 +52,28 @@ function list_files( $source_directory, $mask ) {
 
 }
 
+
+function maybew45( $source_file, $qualities, $ext ) {
+    $doit = false;
+    foreach ( $qualities as $quality ) {
+        $target_file=str_replace( ".$ext", "-$quality.webp", $source_file );
+        //$target_file=str_replace( '/banners/', '/banners-webp/', $target_file );
+        // For GardenVista Group
+        $target_file=str_replace( "/$ext/", '/webp/', $target_file );
+
+        if ( !file_exists( $target_file ) ) {
+            echo $source_file;
+            echo PHP_EOL;
+            echo $target_file;
+            echo PHP_EOL;
+            $doit = true;
+        }
+    }
+    if ( $doit ) {
+        w45( $source_file, $qualities, $ext );
+    }
+
+}
 
 /**
  * Convert .jpg to .webp
