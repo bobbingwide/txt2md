@@ -104,6 +104,12 @@ function get_dpath( $file ) {
         return $contents;
     }
 
+    /**
+     * Writes the new file.
+     *
+     * Write this to oik, oik-bob-bing-wide and oik-libs as it's easier for testing
+     * until the version information is also generated.
+     */
 function write_file() {
     $content = $this->file_start();
     foreach ( $this->icons as $key => $value ) {
@@ -111,6 +117,8 @@ function write_file() {
         $content .= PHP_EOL;
     }
     $content .= $this->file_end();
+    file_put_contents( 'C:/apache/htdocs/wordpress/wp-content/plugins/oik/libs/oik-dash-svg-list.php', $content);
+    file_put_contents( 'C:/apache/htdocs/wordpress/wp-content/plugins/oik-bob-bing-wide/libs/oik-dash-svg-list.php', $content);
     file_put_contents( 'C:/apache/htdocs/wordpress/wp-content/plugins/oik-libs/libs/oik-dash-svg-list.php', $content);
 }
 
@@ -129,7 +137,7 @@ function file_end() {
 }
 
 function write_array( $key, $value ) {
-    $string = '$icons[' . $key . "] = '" . $value . "';";
+    $string = '$icons[' . "'" . $key . "'] = '" . $value . "';";
     return $string;
 
 }
