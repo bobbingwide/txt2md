@@ -12,10 +12,7 @@ $svg2php->process();
 class svg2php {
 
     /** @var string[]
-     * WordPress icons trump dash icons
-     * social link icons trump WordPress icons
-     *
-     * The only duplicate so far is the WordPress icon!
+	 * Source folders for the icons keyed by set's suffix
      */
     private $sources = [ 'dash' => 'C:/github/wordpress/dashicons/svg-min/*.svg'
 , 'icons' => 'C:/github/wordpress/gutenberg/packages/icons/src/library/*.js'
